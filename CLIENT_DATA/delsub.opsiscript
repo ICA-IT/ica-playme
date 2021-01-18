@@ -64,7 +64,7 @@ endif
 
 ;-----------------------------------------------------
 [Winbatch_uninstall_msi]
-msiexec /x $MsiId$ /qb! REBOOT=ReallySuppress
+msiexec /x $MsiId$ /qb! REBOOT=ReallySuppress /quiet /qn
 
 [Winbatch_uninstall_inno]
 "$UninstallProgram$" /SILENT /NORESTART

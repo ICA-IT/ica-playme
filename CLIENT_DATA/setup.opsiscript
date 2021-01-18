@@ -101,7 +101,7 @@ endif
 ; ----------------------------------------------------------------
 
 [Winbatch_install_msi]
-msiexec /i "%ScriptPath%\PlayMeSetup.msi"  /l* "$LogDir$\$ProductId$.install_log.txt" /qb-! ALLUSERS=1 REBOOT=ReallySuppress
+msiexec /i "%ScriptPath%\PlayMeSetup.msi"  /l* "$LogDir$\$ProductId$.install_log.txt" /qb-! ALLUSERS=1 REBOOT=ReallySuppress /quiet /qn
 
 ; ----------------------------------------------------------------
 
