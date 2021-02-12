@@ -9,7 +9,7 @@ DefVar $found$
 DefVar $UninstallProgram$
 
 Set $found$     = "false"
-Set $MsiId$     = '{61D7E911-6D12-4D0B-AF33-35B5FCF51C92}'
+Set $MsiId$     = '{136BEE07-1E93-4284-A99D-D1C077392EFF}'
 
 Message "Uninstalling " + $ProductId$ + " ..."
 
@@ -31,33 +31,6 @@ if ($SetupType$ = "msi" or $SetupType$ = "installshieldmsi" or $SetupType$ = "ad
    endif
 endif
 
-if ($SetupType$ = "inno")
-   Set $UninstallProgram$ = $InstallDir$ + "\unins000.exe"
-   if (not($InstallDir$ = '')) and FileExists($UninstallProgram$)
-      comment "Uninstall program found, starting uninstall"
-      Winbatch_uninstall_inno
-      sub_check_exitcode
-   endif
-endif
-
-if ($SetupType$ = "installshield")
-   Set $UninstallProgram$ = $InstallDir$ + "\uninstall.exe"
-   if (not($InstallDir$ = '')) and FileExists($UninstallProgram$)
-      comment "Uninstall program found, starting uninstall"
-      Winbatch_uninstall_installshield
-      sub_check_exitcode
-   endif
-endif
-
-if ($SetupType$ = "nsis")
-   Set $UninstallProgram$ = $InstallDir$ + "\uninstall.exe"
-   if (not($InstallDir$ = '')) and FileExists($UninstallProgram$)
-      comment "Uninstall program found, starting uninstall"
-      Winbatch_uninstall_nsis /WaitforProcessending "Au_.exe" /Timeoutseconds 10
-      sub_check_exitcode
-   endif
-endif
-
 if (not($InstallDir$ = '')) and (not($InstallDir$ = "not used"))
    Files_uninstall
 endif
@@ -65,15 +38,6 @@ endif
 ;-----------------------------------------------------
 [Winbatch_uninstall_msi]
 msiexec /x $MsiId$ /qb! REBOOT=ReallySuppress /quiet /qn
-
-[Winbatch_uninstall_inno]
-"$UninstallProgram$" /SILENT /NORESTART
-
-[Winbatch_uninstall_installshield]
-"$UninstallProgram$" /s
-
-[Winbatch_uninstall_nsis]
-"$UninstallProgram$" /S
 ;-----------------------------------------------------
 
 [Files_uninstall]

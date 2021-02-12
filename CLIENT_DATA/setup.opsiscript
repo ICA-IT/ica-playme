@@ -12,20 +12,20 @@
 ; SETUPFILE      PlayMeSetup.msi
 ;****************************************
 ; LICENSE        false     
-; PRODUCTDESC    Play audio bible for 20 minutes
+; PRODUCTDESC    Play audio bible
 
 ; PRODUCTNAME    ICA-PlayMe
 ; PRODUCTSIZE    6 MB
-; PRODUCTVER     1.0.1
+; PRODUCTVER     1.1.0
 ;****************************************
 ; SETUPSCRIPT    setup.opsiscript
 ; UNINSSCRIPT    uninstall.opsiscript
 ;****************************************
-; MSIID          {61D7E911-6D12-4D0B-AF33-35B5FCF51C92}
+; MSIID          {136BEE07-1E93-4284-A99D-D1C077392EFF}
 ; USE-MST        
 ; INSTALLDIR     (not used)
 ;****************************************
-; TIMESTAMP      1/17/2021 15:33:40
+; TIMESTAMP      2/11/2021 16:10:46
 ;****************************************
 
 [Actions]
@@ -61,8 +61,8 @@ Set $Setupfile$       = "PlayMeSetup.msi"
 Set $InstallDir$      = "(not used)"
 Set $LicenseRequired$ = "false"
 Set $LicensePool$     = "p_" + $ProductId$
-Set $MsiId$           = "{61D7E911-6D12-4D0B-AF33-35B5FCF51C92}"
-Set $MinimumSpace$    = "6 MB"
+Set $MsiId$           = "{136BEE07-1E93-4284-A99D-D1C077392EFF}"
+Set $MinimumSpace$    = "9 MB"
 ; ----------------------------------------------------------------
 ; ----------------------------------------------------------------
 
@@ -80,13 +80,7 @@ else
    endif
    
    Message "Installing " + $ProductId$ + " ..."
-   
-   if $LicenseRequired$ = "true"
-      comment "Licensing required, reserve license and get license key"
-      Sub_get_licensekey
-   endif
-
-   
+    
    comment "Start setup program"
    ChangeDirectory "%SCRIPTPATH%"
    ;----------------------------------------------
@@ -103,46 +97,4 @@ endif
 [Winbatch_install_msi]
 msiexec /i "%ScriptPath%\PlayMeSetup.msi"  /l* "$LogDir$\$ProductId$.install_log.txt" /qb-! ALLUSERS=1 REBOOT=ReallySuppress /quiet /qn
 
-; ----------------------------------------------------------------
-
-
-[Sub_get_licensekey]
-if opsiLicenseManagementEnabled
-   comment "License management is enabled and will be used"
-
-   comment "Trying to get a license key"
-   Set $LicenseKey$ = demandLicenseKey ($LicensePool$)
-   ; If there is an assignment of exactly one licensepool to the product the following call is possible:
-   ; Set $LicenseKey$ = demandLicenseKey ("", $ProductId$)
-   ;
-   ; If there is an assignment of a license pool to a windows software id, it is possible to use:
-   ; DefVar $WindowsSoftwareId$
-   ; $WindowsSoftwareId$ = "..."
-   ; Set $LicenseKey$ = demandLicenseKey ("", "", $WindowsSoftwareId$)
-
-   DefVar $ServiceErrorClass$
-   set $ServiceErrorClass$ = getLastServiceErrorClass
-   comment "Error class: " + $ServiceErrorClass$
-   
-   if $ServiceErrorClass$ = "None"
-      comment "Everything fine, we got the license key '" + $LicenseKey$ + "'"
-   else
-      if $ServiceErrorClass$ = "LicenseConfigurationError"
-         LogError "Fatal: license configuration must be corrected"
-         LogError getLastServiceErrorMessage
-         isFatalError
-      else 
-         if $ServiceErrorClass$ = "LicenseMissingError"
-            LogError "Fatal: required license is not supplied"
-            isFatalError
-         endif
-      endif
-   endif
-else
-   LogError "Fatal: license required, but license management not enabled"
-   isFatalError
-endif
-
-; ----------------------------------------------------------------
-; ----------------------------------------------------------------
 

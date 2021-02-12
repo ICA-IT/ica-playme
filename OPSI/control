@@ -6,9 +6,9 @@ depends:
 type: localboot
 id: ica-playme
 name: ICA-PlayMe
-description: Play audio bible for 20 minutes
+description: Play audio bible
 advice: 
-version: 1.0.1
+version: 1.1.0
 priority: 0
 licenseRequired: False
 productClasses: 
@@ -21,6 +21,13 @@ customScript:
 userLoginScript: 
 
 [Changelog]
+ica-playme2 (1.1.0-1) stable; urgency=low
+
+	* initial: created by opsi-setup-detector
+
+ -- opsisetupdetector.exe <info@uib.de>  2/11/2021 16:10:46
+
+
 ica-playme (1.0.1-1) stable; urgency=low
 
 	* initial: created by opsi-setup-detector
